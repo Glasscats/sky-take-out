@@ -11,3 +11,8 @@ sky:
     access-key-id: LTAI5t9iLp94i9HAET34wZbX
     access-key-secret: eiuPcsSIto3ruzIkzYBwFw0aazLasV
     bucket-name: sky-take-out1234561
+  redis:
+    host: localhost
+    port: 6379
+    password: glasscats
+    database: 10
