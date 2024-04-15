@@ -5,14 +5,14 @@ sky:
     port: 3306
     database: sky_take_out
     username: root
-    password: 123456
+    password: **
   alioss:
     endpoint: oss-cn-beijing.aliyuncs.com
-    access-key-id: LTAI5t9iLp94i9HAET34wZbX
-    access-key-secret: eiuPcsSIto3ruzIkzYBwFw0aazLasV
+    access-key-id: **
+    access-key-secret: **
     bucket-name: sky-take-out1234561
   redis:
     host: localhost
     port: 6379
-    password: glasscats
+    password: **
     database: 10
