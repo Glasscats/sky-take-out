@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -259,5 +260,56 @@ public class OrderServiceImpl implements OrderService {
         }).collect(Collectors.toList());
 
         shoppingCartMapper.insertBatch(shoppingCarts);
+    }
+
+    /**
+     * 订单搜索
+     * @param ordersPageQueryDTO
+     * @return
+     */
+    public PageResult conditionSearch(OrdersPageQueryDTO ordersPageQueryDTO) {
+        PageHelper.startPage(ordersPageQueryDTO.getPage(), ordersPageQueryDTO.getPageSize());
+
+        Page<Orders> page = orderMapper.pageQuery(ordersPageQueryDTO);
+        List<OrderVO> list = getOrderVOList(page);
+        return new PageResult(page.getTotal(), list);
+    }
+
+    /**
+     * 获取VO数据
+     * @param page
+     * @return
+     */
+    private List<OrderVO> getOrderVOList(Page<Orders> page) {
+        List<OrderVO> orderVOList = new ArrayList<>();
+        List<Orders> ordersList = page.getResult();
+        if (!CollectionUtils.isEmpty(ordersList)) {
+            for (Orders orders : ordersList) {
+                OrderVO orderVO = new OrderVO();
+                BeanUtils.copyProperties(orders, orderVO);
+                String orderDishes = getOrderDishStr(orders);
+
+                orderVO.setOrderDishes(orderDishes);
+                orderVOList.add(orderVO);
+            }
+        }
+
+        return orderVOList;
+    }
+
+    /**
+     * 根据id获取菜品字符串
+     * @param orders
+     * @return
+     */
+    private String getOrderDishStr(Orders orders) {
+        List<OrderDetail> orderDetails = orderDetailMapper.getByOrderId(orders.getId());
+
+        List<String> stringList = orderDetails.stream().map(x -> {
+            String orderDish = x.getName() + "*" + x.getNumber() + ";";
+            return orderDish;
+        }).collect(Collectors.toList());
+
+        return String.join("", stringList);
     }
 }
