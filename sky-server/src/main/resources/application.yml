@@ -53,3 +53,7 @@ sky:
   wechat:
     appid: ${sky.wechat.appid}
     secret: ${sky.wechat.secret}
+  shop:
+    address: 山东省济南市长清区大学路一号山东师范大学
+  baidu:
+    ak: xGDUcTh0QWcNz6C7UxLNCFgfjxQVaSml
